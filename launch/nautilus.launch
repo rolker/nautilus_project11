@@ -1,0 +1,7 @@
+<launch>
+  <arg name="namespace" default="project11/operator"/>
+
+  <rosparam command="load" file="$(find nautilus_project11)/config/nautilus.yaml" ns="$(arg namespace)"/>
+
+  <node pkg="nautilus_project11" type="nav.py" name="nautilus_nav" />
+</launch>
