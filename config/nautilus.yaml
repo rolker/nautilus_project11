@@ -1,7 +1,8 @@
 project11/platforms/nautilus:
   namespace: /project11/nautilus
-  width: 10.5
-  length: 68.23
+  width: 10.2
+  length: 68.2
+  reference_x: 7.9
   nav_sources:
     udp:
       position_topic: /project11/nautilus/position
