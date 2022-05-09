@@ -3,6 +3,7 @@ project11/platforms/nautilus:
   width: 10.2
   length: 68.2
   reference_x: 7.9
+  reference_y: 0.359
   nav_sources:
     udp:
       position_topic: /project11/nautilus/position
