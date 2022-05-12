@@ -1,0 +1,16 @@
+<launch>
+  <arg name="namespace" default="project11/nautilus"/>
+
+  <rosparam command="load" file="$(find nautilus_project11)/config/nautilus_platform.yaml" ns="$(arg namespace)"/>
+
+  <node pkg="mru_transform" type="mru_transform_node" name="mru_transform" ns="$(arg namespace)">
+    <param name="base_frame" value="$(arg namespace)/base_link"/>
+    <param name="map_frame" value="$(arg namespace)/map"/>
+    <param name="odom_frame" value="$(arg namespace)/odom"/>
+    <remap from="nav/position" to="project11/nav/position"/>
+    <remap from="nav/orientation" to="project11/nav/orientation"/>
+    <remap from="nav/velocity" to="project11/nav/velocity"/>
+    <remap from="nav/active_sensor" to="project11/nav/active_sensor"/>
+    <remap from="odom" to="project11/odom"/>
+  </node>
+</launch>
