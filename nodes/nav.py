@@ -5,6 +5,7 @@ import rospy
 from sensor_msgs.msg import NavSatFix
 from sensor_msgs.msg import Imu
 from geometry_msgs.msg import TwistWithCovarianceStamped
+from marine_msgs.msg import Heartbeat, KeyValue
 
 import socket
 import json
@@ -21,12 +22,15 @@ position_pub = rospy.Publisher('project11/nautilus/position',NavSatFix,queue_siz
 orientation_pub = rospy.Publisher('project11/nautilus/orientation',Imu,queue_size=10)
 velocity_pub = rospy.Publisher('project11/nautilus/velocity',TwistWithCovarianceStamped,queue_size=10)
 
+heartbeat_pub = rospy.Publisher('project11/nautilus/project11/heartbeat', Heartbeat, queue_size=1)
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(('', port))
 
 while not rospy.is_shutdown():
   data = sock.recv(2048)
   d = json.loads(data)
+  #print (d)
 
   ts = rospy.Time.from_sec(d['time'])
   
@@ -60,3 +64,35 @@ while not rospy.is_shutdown():
   twcs.twist.twist.linear.y = d['vel_north']
   twcs.twist.twist.linear.z = -d['vel_down']
   velocity_pub.publish(twcs)
+
+  hb = Heartbeat()
+  hb.header.stamp = ts
+  kv = KeyValue()
+  kv.key = 'latitude'
+  kv.value = str(d['latitude'])
+  hb.values.append(kv)
+  kv = KeyValue()
+  kv.key = 'longitude'
+  kv.value = str(d['longitude'])
+  hb.values.append(kv)
+  kv = KeyValue()
+  kv.key = 'height'
+  kv.value = str(d['height'])
+  hb.values.append(kv)
+  kv = KeyValue()
+  kv.key = 'heave'
+  kv.value = str(d['heave'])
+  hb.values.append(kv)
+  kv = KeyValue()
+  kv.key = 'roll'
+  kv.value = str(d['roll'])
+  hb.values.append(kv)
+  kv = KeyValue()
+  kv.key = 'pitch'
+  kv.value = str(d['pitch'])
+  hb.values.append(kv)
+  kv = KeyValue()
+  kv.key = 'heading'
+  kv.value = str(d['heading'])
+  hb.values.append(kv)
+  heartbeat_pub.publish(hb)
