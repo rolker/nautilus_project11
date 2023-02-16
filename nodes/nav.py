@@ -5,7 +5,7 @@ import rospy
 from sensor_msgs.msg import NavSatFix
 from sensor_msgs.msg import Imu
 from geometry_msgs.msg import TwistWithCovarianceStamped
-from marine_msgs.msg import Heartbeat, KeyValue
+from project11_msgs.msg import Heartbeat, KeyValue
 
 import socket
 import json
