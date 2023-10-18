@@ -1,3 +1,8 @@
+mru_transform/sensors:
+ - name: seapath
+   topics: { position: 'sensors/seapath/fix', orientation: 'sensors/seapath/imu', velocity: 'sensors/seapath/twist'}
+
+
 project11/platforms/nautilus:
   namespace: /project11/nautilus
   width: 10.2

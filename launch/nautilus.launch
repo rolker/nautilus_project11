@@ -1,7 +1,40 @@
 <launch>
-  <arg name="namespace" default="project11/operator"/>
+  <arg name="namespace" default="project11/nautilus"/>
+  <arg name="platform_name" default="nautilus"/>
 
-  <rosparam command="load" file="$(find nautilus_project11)/config/nautilus.yaml" ns="$(arg namespace)"/>
+  <group ns="$(arg namespace)">
 
-  <node pkg="nautilus_project11" type="nav.py" name="nautilus_nav" />
+    <node pkg="mru_transform" type="mru_transform_node" name="mru_transform">
+      <param name="base_frame" value="$(arg platform_name)/base_link"/>
+      <param name="map_frame" value="$(arg platform_name)/map"/>
+      <param name="odom_frame" value="$(arg platform_name)/odom"/>
+    </node>
+
+    <rosparam command="load" file="$(find nautilus_project11)/config/nautilus.yaml"/>
+
+    <node pkg="nautilus_project11" type="heartbeat.py" name="heartbeat" />
+
+    <node pkg="seapath" type="seapath_node" name="seapath_node" ns="sensors/seapath">
+      <param name="frame_id" value="nautilus/seapath"/>
+    </node>
+
+  </group> 
+
+  <include file="$(find project11)/launch/platform.launch">
+    <arg name="namespace" value="$(arg namespace)"/>
+    <arg name="platform_name" value="$(arg platform_name)"/>
+    <arg name="platform_package" value="nautilus_project11"/>
+  </include>
+
+  <include file="$(find project11)/launch/platform_nav_source.launch">
+    <arg name="namespace" value="$(arg namespace)"/>
+    <arg name="platform_name" value="$(arg platform_name)"/>
+    <arg name="position_topic" value="sensors/seapath/fix"/>
+    <arg name="orientation_topic" value="sensors/seapath/imu"/>
+    <arg name="velocity_topic" value="sensors/seapath/twist"/>
+  </include>
+
+  <include file="$(find ev_nautilus_description)/launch/load.launch">
+    <arg name="namespace" value="$(arg platform_name)"/>
+  </include>
 </launch>
