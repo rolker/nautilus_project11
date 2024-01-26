@@ -11,6 +11,6 @@
     <remap from="nav/orientation" to="project11/nav/orientation"/>
     <remap from="nav/velocity" to="project11/nav/velocity"/>
     <remap from="nav/active_sensor" to="project11/nav/active_sensor"/>
-    <remap from="odom" to="project11/odom"/>
+    <remap from="odom" to="odom"/>
   </node>
 </launch>
